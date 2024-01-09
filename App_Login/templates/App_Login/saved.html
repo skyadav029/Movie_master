@@ -1,0 +1,76 @@
+{% extends 'App_Login/base.html' %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+{% block title %}
+saved movies
+{% endblock %}
+
+{% block main %}
+<h1 class="text-primary text-center" style="font-weight: bolder;">Your Saved Movies & Tv Shows</h1>
+
+
+<div class="row flex d-flex justify-content-center text-dark">
+
+    {% for r in movies %}
+   
+    <div class="card mb-5 m-3 " style="width: 19rem; ">
+        <!-- <img src="https://image.tmdb.org/t/p/w200/{{r.poster_path}}" class="card-img-top" alt="..." > -->
+        <div class="card-body">
+       
+          <h5 class="card-title"> <b>{{r.title}}</b> </h5>
+        
+          <p class="card-text">{{r.overview|range_filter|linebreaks}}</p>
+
+          <p> <b>Type: </b> {{r.type}}</p>
+         
+          <a href="{% url 'moviedetail' r.ids %}" class="btn btn-primary">View Details</a>
+
+        
+          
+          {% if user.is_authenticated %}
+          <button class="btn btn-warning" onclick="unsavemovie('{{ r.id }}')">UnSave</button>
+          {% else %}
+          
+          <button class="btn btn-warning" disabled>Save</button>
+        
+         {% endif %}
+       
+       
+        </div>
+      </div>
+      
+
+      {% endfor %} 
+
+
+      {% for r in tvs %}
+   
+      <div class="card mb-5 m-3 " style="width: 19rem; ">
+          <!-- <img src="https://image.tmdb.org/t/p/w200/{{r.poster_path}}" class="card-img-top" alt="..." > -->
+          <div class="card-body">
+         
+            <h5 class="card-title"> <b>{{r.title}}</b> </h5>
+          
+            <p class="card-text">{{r.overview|range_filter|linebreaks}}</p>
+  
+            <p> <b>Type: </b> {{r.type}}</p>
+           
+            <a href="{% url 'tvdetail' r.ids %}" class="btn btn-primary">View Details</a>
+            
+            {% if user.is_authenticated %}
+            <button class="btn btn-warning" onclick="unsavemovie('{{ r.ids }}')">UnSave</button>
+            {% else %}
+            
+            <button class="btn btn-warning" disabled>Save</button>
+          
+           {% endif %}
+         
+         
+          </div>
+        </div>
+        
+        {% endfor %} 
+     
+</div>
+
+{% endblock %}
